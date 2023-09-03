@@ -13,7 +13,8 @@ namespace DecisionTree.MVC.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// Delete current item and associated children
+        /// Override method of generic 'DeleteAsync' 
+        /// To delete current item and associated children
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -43,6 +44,20 @@ namespace DecisionTree.MVC.Infrastructure.Repositories
             _dbSet.Remove(parent);
 
             return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// See cref="DecisionTree.MVC.Infrastructure.Repositories.Interfaces.IHierarchyItemRepository"
+        /// </summary>
+        /// <returns></returns>h
+        public async Task<IEnumerable<HierarchyItem>> GetAllParent()
+        {
+            return await _ctx.HierarchyItemSet.Include(c => c.Children).Where(c => c.ParentId == null).ToListAsync();
+        }
+
+        public async Task<HierarchyItem> GetSingle(int id)
+        {
+            return await _ctx.HierarchyItemSet.Include(c => c.Children).FirstAsync(c => c.Id == id);
         }
     }
 }

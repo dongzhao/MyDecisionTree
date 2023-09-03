@@ -20,6 +20,7 @@ namespace DecisionTree.MVC.Infrastructure.DAL
             //    .WithOne(c => c.Parent)
             //    .HasForeignKey(c => c.ParentId)
             //    .IsRequired(false);
+
             builder.Entity<HierarchyItem>()
                 .HasOne(p => p.Parent)
                 .WithMany(c => c.Children)
@@ -33,6 +34,7 @@ namespace DecisionTree.MVC.Infrastructure.DAL
                 {
                     ownedNavigationBuilder.ToJson();
                 });
+
             // bind model to json object
             builder.Entity<HierarchyItem>().OwnsOne(p =>
                 p.Metadata, ownedNavigationBuilder =>

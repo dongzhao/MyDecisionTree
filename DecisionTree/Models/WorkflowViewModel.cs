@@ -2,6 +2,11 @@
 
 namespace DecisionTree.Models
 {
+    /// <summary>
+    /// A hierarchy table model view of db entity HierarchyItem
+    /// The object data was converted from populated HierarchyItem 
+    /// via automapper 
+    /// </summary>
     public class WorkflowViewModel
     {
         public int Id { get; set; }

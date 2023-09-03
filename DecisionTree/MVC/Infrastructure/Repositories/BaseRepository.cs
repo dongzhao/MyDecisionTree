@@ -49,6 +49,12 @@ namespace DecisionTree.MVC.Infrastructure.Repositories
             return await _dbSet.FindAsync(id);
         }
 
+        //public virtual async Task<IEnumerable<T>> GetManyAsync(
+        //    Expression<Func<T, bool>>? filter = null,
+        //    Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        //    int? pageSize = null,
+        //    int? pageNumber = null,
+        //    params string[] includedFields)
         public virtual async Task<IEnumerable<T>> GetManyAsync(
             Expression<Func<T, bool>>? filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
@@ -62,7 +68,7 @@ namespace DecisionTree.MVC.Infrastructure.Repositories
                 query = query.Where(filter);
             }
 
-            //if(includedFields.Length > 0)
+            //if (includedFields.Length > 0)
             //{
             //    query = includedFields.Aggregate(query, (theQuery, theInclude) => theQuery.Include(theInclude));
             //}

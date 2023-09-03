@@ -1,5 +1,6 @@
-﻿@model IEnumerable<DecisionTree.Models.WorkflowViewModel>
+﻿@model IEnumerable<DecisionTree.Models.Documents.DocumentViewModel>
 
+<h4>Document List Demo</h4>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -39,7 +40,7 @@
             <td>
                 @Html.ActionLink("Create", "Create", new { id =item.Id }) |
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("View", "FlowChartView", new { id=item.Id }) |
+                @Html.ActionLink("View", "DocmentListView", new { id=item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id})
             </td>
         </tr>

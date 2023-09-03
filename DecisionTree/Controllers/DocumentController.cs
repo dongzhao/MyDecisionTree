@@ -1,45 +1,46 @@
 ﻿using DecisionTree.Mapper;
-using DecisionTree.Models;
+using DecisionTree.Models.Documents;
+using DecisionTree.MVC.Application.Document;
 using DecisionTree.MVC.Core.Entities;
+using DecisionTree.MVC.Core.Enums;
 using DecisionTree.MVC.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DecisionTree.Controllers
 {
-    public class WorkflowController : Controller
+    public class DocumentController : Controller
     {
-        private readonly IUnitOfWork _uow; 
+        private readonly IDocumentService _document;
 
-        public WorkflowController(IUnitOfWork uow)
+        public DocumentController(IDocumentService doc)
         {
-            this._uow = uow;
+            this._document = doc;
         }
 
         public async Task<ActionResult> Index()
         {
-            var items = await _uow.HierarchyItemRepository.GetManyAsync(null);
-            var modelViews = items?.Select(c => new WorkflowViewModel{ Id = c.Id, ParentId = c.ParentId, Title = c.Title, ItemType = c.ItemType}).OrderByDescending(d => d.ParentId).OrderByDescending(d => d.Id);
+            var items = await _document.GetAllDocuments();
+            var modelViews = items?.Select(c => new DocumentViewModel { Id = c.Id, ParentId = c.ParentId, Title = c.Title, ItemType = c.ItemType }).OrderByDescending(d => d.ParentId).OrderByDescending(d => d.Id);
             return View(modelViews);
         }
 
-        // GET: WorkflowController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
         // GET: WorkflowController/View/5
-        public async Task<ActionResult> FlowChartView(int id)
+        public async Task<ActionResult> DocmentListView(int id)
         {
-            var item = await _uow.HierarchyItemRepository.GetAsync(id);
-            var model = TreeViewModelMapper.Map(item);           
+            var item = await _document.GetDocument(id);
+            var model = TreeViewModelMapper.Map(item);
             return View(model);
         }
 
-        // GET: WorkflowController/Create
         public ActionResult Create(int? id = null)
         {
-            var model = new WorkflowViewModel
+            var model = new DocumentViewModel
             {
                 ParentId = id,
             };
@@ -47,10 +48,9 @@ namespace DecisionTree.Controllers
             return View(model);
         }
 
-        // POST: WorkflowController/Create
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(WorkflowViewModel model)
+        public async Task<ActionResult> Create(DocumentViewModel model)
         {
             try
             {
@@ -61,8 +61,7 @@ namespace DecisionTree.Controllers
                     ItemType = model.ItemType,
                 };
 
-                await _uow.HierarchyItemRepository.AddAsync(item);
-                await _uow.CommitChangesAsync();
+                await _document.SaveOrUpdate(item);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -72,11 +71,10 @@ namespace DecisionTree.Controllers
             }
         }
 
-        // GET: WorkflowController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var item = await _uow.HierarchyItemRepository.GetAsync(id);
-            var model = new WorkflowViewModel
+            var item = await _document.HierarchyItemRepository.GetAsync(id);
+            var model = new DocumentViewModel
             {
                 Id = id,
                 ParentId = item.ParentId,
@@ -86,19 +84,18 @@ namespace DecisionTree.Controllers
             return View(model);
         }
 
-        // POST: WorkflowController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(WorkflowViewModel model)
+        public async Task<ActionResult> Edit(DocumentViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     var id = model.Id;
-                    var item = await _uow.HierarchyItemRepository.GetAsync(id);
+                    var item = await _document.HierarchyItemRepository.GetAsync(id);
                     var modelChanged = false;
-                    if(model.Title != item.Title)
+                    if (model.Title != item.Title)
                     {
                         item.Title = model.Title;
                         modelChanged = true;
@@ -111,8 +108,8 @@ namespace DecisionTree.Controllers
 
                     if (modelChanged)
                     {
-                        await _uow.HierarchyItemRepository.UpdateAsync(item);
-                        await _uow.CommitChangesAsync();
+                        await _document.HierarchyItemRepository.UpdateAsync(item);
+                        await _document.CommitChangesAsync();
                         return RedirectToAction(nameof(Index));
                     }
                 }
@@ -124,15 +121,14 @@ namespace DecisionTree.Controllers
             }
         }
 
-        // POST: WorkflowController/Delete/5
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                await _uow.HierarchyItemRepository.DeleteAsync(id);
-                await _uow.CommitChangesAsync();
+                await _document.HierarchyItemRepository.DeleteAsync(id);
+                await _document.CommitChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch

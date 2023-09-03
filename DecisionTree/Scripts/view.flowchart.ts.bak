@@ -1,0 +1,32 @@
+﻿
+const dummyData = {
+    "name": "Asia",
+    "children": [
+        {
+            "name": "Vietnam",
+            "children": [
+                {
+                    "name": "Saigon"
+                }
+            ]
+
+        },
+        {
+            "name": "India",
+            "children": [
+                {
+                    "name": "Mumbai"
+                }
+            ]
+
+        }
+    ]
+}
+
+
+//4.
+//var treeLayout = d3.tree().size([400, 200]);
+
+//var root = d3.hierarchy(dummyData);
+
+//treeLayout(root)

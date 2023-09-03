@@ -37,9 +37,6 @@ namespace DecisionTree.MVC.Infrastructure
 
     public interface IUnitOfWork : IAsyncDisposable
     {
-        //IRepository<Catalog, int> CatalogRepository { get; set; }
-        //IRepository<Order, int> OrderRepository { get; set; }
-        //IRepository<OrderItem, int> OrderItemRepository { get; set; }
         //IRepository<HierarchyItem, int> HierarchyItemRepository { get; set; }
         IHierarchyItemRepository HierarchyItemRepository { get; set; }
         Task CommitChangesAsync(CancellationToken cancellationToken = default);

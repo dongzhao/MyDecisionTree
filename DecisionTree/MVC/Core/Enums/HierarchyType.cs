@@ -13,5 +13,7 @@ namespace DecisionTree.MVC.Core.Enums
         Value,
         Decision,
         End,
+        Document,
+        Folder,
     }
 }

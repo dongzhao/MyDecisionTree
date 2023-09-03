@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "d3@7.8.5",
+      "destination": "wwwroot/lib/d3/"
+    }
+    //{
+    //  "provider": "unpkg",
+    //  "library": "font-awesome@4.7.0",
+    //  "destination": "wwwroot/lib/font-awesome/"
+    //}
+  ]
+}

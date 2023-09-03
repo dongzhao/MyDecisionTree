@@ -16,7 +16,13 @@ namespace DecisionTree.MVC.Core.Entities
         public string Title { get; set; }
         [Column(TypeName = "nvarchar(20)")]
         public HierarchyType ItemType { get; set; } = HierarchyType.Start;
+        /// <summary>
+        /// 
+        /// </summary>
         public ItemMetaData Metadata { get; set; } = new();
+        /// <summary>
+        /// 
+        /// </summary>
         public List<ItemMetaData> MetadataList { get; set; } = new();
         public virtual HierarchyItem Parent { get; set; }
         public virtual List<HierarchyItem> Children { get; set; } = new();
